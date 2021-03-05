@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "tokenizer.h"
 #include "history.h"
 
@@ -15,7 +16,7 @@ int main(){
       noexit = 0;
     }
     else{
-      char** tokens = tokenize(input);
+      char **tokens = tokenize(input);
       print_tokens(tokens);
       free_tokens(tokens);
     }

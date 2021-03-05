@@ -11,7 +11,7 @@ int space_char(char c){
 }
 
 int non_space_char(char c){
-  if(c != '\t' || c != ' '){
+  if(c != '\t' || c != ' ' || c != '\0'){
     return 1;
   }
   return 0;
@@ -43,31 +43,32 @@ char *word_terminator(char *word){
 }
 
 int count_words(char *str){
-  int count = 0;
-  int i = 0;
-  while(str[i] != '\0') {
-      if(space_char(str[i]) && non_space_char(str[i + 1]))
-	count++;
-      i++;
+  int index = 0;
+  int counter = 0;
+  while(str[index] != '\0'){
+    while(space_char(*(str+index))){
+      index = index + 1;
     }
-    count++;
-  return count;
+    if(non_space_char(*(str+index))){
+      counter = counter + 1;
+    }
+    while(non_space_char(*(str+index))){
+      index = index + 1;
+    }
+  }
+  return counter;
 }
 
-char  *copy_str(char *inStr, short len){
+char *copy_str(char *inStr, short len){
   int i = 0;
   //MALLOC FOR NEW STR :D
-  printf("test");
   char *outStr = malloc((len+1) *sizeof(char));
   if (outStr == NULL) {
-
     fprintf(stderr, "error: allocating memory\n");
-
     return NULL;
-
   }
   
-  while(i<=len){
+  while(i<len){
     outStr[i]  = inStr[i];
     i= i+1;
   }
@@ -78,14 +79,14 @@ char  *copy_str(char *inStr, short len){
 char **tokenize(char *str){
   int i = 0;
   int all = count_words(str);
-  char **tokens = (char**)  malloc((all+1) * sizeof(char*));
+  char **tokens = (char**)malloc((all+1) * sizeof(char*));
   if (tokens == NULL) {
     fprintf(stderr, "error: allocating memory\n");
     return NULL;
   }
   char *start = str, *end = str;
 
-  while(i < all){
+  while(i <= all){
     start = word_start(end);
     end = word_terminator(start);
     tokens[i] = copy_str(start, end - start);
