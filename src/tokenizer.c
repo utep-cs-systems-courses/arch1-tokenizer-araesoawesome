@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "tokenizer.h"
 
 int space_char(char c){
@@ -19,6 +20,9 @@ int non_space_char(char c){
 char *word_start(char *str){
   int i = 0;
   while(space_char(str[i]) == 1){
+    if(str[i] == '\0'){
+      return NULL;
+    }
     i++;
   }
   return &str[i];
@@ -29,6 +33,9 @@ char *word_terminator(char *word){
   int i = 0;
   
   while(non_space_char(word[i]) == 1){
+    if(word[i] == '\0'){
+      return NULL;
+    }
     i = i+1;
   }
   
@@ -50,37 +57,41 @@ int count_words(char *str){
 char  *copy_str(char *inStr, short len){
   int i = 0;
   //MALLOC FOR NEW STR :D
+  printf("test");
   char *outStr = malloc((len+1) *sizeof(char));
+  if (outStr == NULL) {
 
+    fprintf(stderr, "error: allocating memory\n");
+
+    return NULL;
+
+  }
+  
   while(i<=len){
     outStr[i]  = inStr[i];
     i= i+1;
   }
+  outStr[i] = '\0';
   return outStr;
 }
 
 char **tokenize(char *str){
   int i = 0;
-  printf("%s","int i");
-  int len;
-  printf("%s","len");
   int all = count_words(str);
-  printf("%s","all");
-  char **tokens = malloc((all+1) * sizeof(char*));
-  printf("%s","tokens");
-  char *pointer = str;
-  printf("%s","pointer");
-
-  while(i < all+1){
-    pointer = word_start(pointer);
-    printf("%s","word_start");
-    len = (word_terminator(pointer) - word_start(pointer));
-    printf("%s","len");
-    tokens[i] = copy_str(pointer, len);
-    pointer = word_terminator(pointer);
-    i = i + 1;
+  char **tokens = (char**)  malloc((all+1) * sizeof(char*));
+  if (tokens == NULL) {
+    fprintf(stderr, "error: allocating memory\n");
+    return NULL;
   }
-  tokens[i] = 0;
+  char *start = str, *end = str;
+
+  while(i < all){
+    start = word_start(end);
+    end = word_terminator(start);
+    tokens[i] = copy_str(start, end - start);
+    i++;
+  }
+  tokens[i] = NULL;
   return tokens;
 }
 
