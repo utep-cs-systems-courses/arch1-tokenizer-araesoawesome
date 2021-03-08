@@ -19,7 +19,7 @@ int main(){
     else if(*input == 'h'){
       int i = atoi(input+1);
       char* his = get_history(history, i);
-      printf("%s","> ", his);
+      printf("%s", his);
 
       char** tokenhis = tokenize(his);
       print_tokens(tokenhis);

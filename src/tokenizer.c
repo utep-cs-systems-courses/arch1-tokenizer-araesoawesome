@@ -43,17 +43,17 @@ char *word_terminator(char *word){
 }
 
 int count_words(char *str){
-  int index = 0;
+  char *start = word_start(str);
   int counter = 0;
-  while(str[index] != '\0'){
-    while(space_char(*(str+index))){
-      index = index + 1;
+  while(*start){
+    start = word_start(str);
+    if(start == NULL){
+      return counter;
     }
-    if(non_space_char(*(str+index))){
-      counter = counter + 1;
-    }
-    while(non_space_char(*(str+index))){
-      index = index + 1;
+    counter++;
+    start = word_terminator(start);
+    if(start == NULL){
+      return counter;
     }
   }
   return counter;
@@ -70,7 +70,7 @@ char *copy_str(char *inStr, short len){
   
   while(i<len){
     outStr[i]  = inStr[i];
-    i= i+1;
+    i++;
   }
   outStr[i] = '\0';
   return outStr;
@@ -86,7 +86,7 @@ char **tokenize(char *str){
   }
   char *start = str, *end = str;
 
-  while(i <= all){
+  while(i < all){
     start = word_start(end);
     end = word_terminator(start);
     tokens[i] = copy_str(start, end - start);
