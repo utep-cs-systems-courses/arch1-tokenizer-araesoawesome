@@ -11,7 +11,7 @@ int space_char(char c){
 }
 
 int non_space_char(char c){
-  if(c != '\t' || c != ' ' || c != '\0'){
+  if(c != '\t' && c != ' ' && c != '\0'){
     return 1;
   }
   return 0;
@@ -46,7 +46,7 @@ int count_words(char *str){
   char *start = word_start(str);
   int counter = 0;
   while(*start){
-    start = word_start(str);
+    start = word_start(start);
     if(start == NULL){
       return counter;
     }
