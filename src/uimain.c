@@ -24,6 +24,9 @@ int main(){
       char** tokenhis = tokenize(his);
       print_tokens(tokenhis);
     }
+    else if(*input == 'f'){
+      print_history(history);
+    }
     else{
       char **tokens = tokenize(input);
       print_tokens(tokens);
